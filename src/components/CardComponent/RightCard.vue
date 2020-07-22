@@ -17,7 +17,7 @@
       <transition
         mode="out-in"
         enter-active-class="animate__animated animate__fadeInDown animate__faster"
-        leave-active-class="animate__animated animate__fadeOutLeft animate__faster"
+        leave-active-class="animate__animated animate__fadeOutUp animate__faster"
       >
         <div class="card-rating fs-12 mb-1" key="1" v-if="!changeContent">
           <span class="mr-1">{{ value.rating }}</span>
