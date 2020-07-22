@@ -69,37 +69,7 @@
                         :key="value.name"
                         class="col col-12 px-2 mb-3"
                       >
-                        <div class="card">
-                          <img
-                            class="card-img-top img-fit"
-                            :src="value.icon"
-                            width="286"
-                            height="180"
-                          />
-                          <div class="card-body p-2">
-                            <h5 class="card-title text-truncate card-name">
-                              {{ value.name }}
-                            </h5>
-                            <div class="card-rating fs-12 mb-1">
-                              <span class="mr-1">{{ value.rating }}</span>
-                              <star-rating
-                                :rating="value.rating"
-                                :star-size="12"
-                                :read-only="true"
-                                :increment="0.01"
-                                :show-rating="false"
-                              ></star-rating>
-                              <span class="ml-1"
-                                >({{ value.user_rating }})</span
-                              >
-                            </div>
-                            <p class="card-text text-truncate card-address">
-                              {{ value.address }}
-                            </p>
-                          </div>
-                          <!--/card-body-->
-                        </div>
-                        <!--/card-->
+                        <left-card :value="value"></left-card>
                       </div>
                       <!--/col-12-->
                     </transition-group>
@@ -118,35 +88,7 @@
                       :key="value.name"
                       class="col col-12 px-2 mb-3"
                     >
-                      <div class="card">
-                        <img
-                          class="card-img-top img-fit"
-                          :src="value.icon"
-                          width="286"
-                          height="180"
-                        />
-                        <div class="card-body p-2">
-                          <h5 class="card-title text-truncate card-name">
-                            {{ value.name }}
-                          </h5>
-                          <div class="card-rating fs-12 mb-1">
-                            <span class="mr-1">{{ value.rating }}</span>
-                            <star-rating
-                              :rating="value.rating"
-                              :star-size="12"
-                              :read-only="true"
-                              :increment="0.01"
-                              :show-rating="false"
-                            ></star-rating>
-                            <span class="ml-1">({{ value.user_rating }})</span>
-                          </div>
-                          <p class="card-text text-truncate card-address">
-                            {{ value.address }}
-                          </p>
-                        </div>
-                        <!--/card-body-->
-                      </div>
-                      <!--/card-->
+                      <right-card :value="value"></right-card>
                     </div>
                     <!--/col-12-->
                   </draggable>
@@ -170,8 +112,10 @@
 
 <script>
 import { gmapApi } from "vue2-google-maps";
-import StarRating from "vue-star-rating";
 import draggable from "vuedraggable";
+
+import LeftCard from "./CardComponent/LeftCard.vue";
+import RightCard from "./CardComponent/RightCard.vue";
 
 export default {
   data() {
@@ -354,8 +298,9 @@ export default {
     }
   },
   components: {
-    StarRating,
-    draggable
+    draggable,
+    RightCard,
+    LeftCard
   },
   mounted() {
     setTimeout(() => {
@@ -368,6 +313,8 @@ export default {
 </script>
 
 <style>
+@import "../assets/fontawesome/css/all.css";
+
 .gm-ui-hover-effect {
   display: none !important;
 }
@@ -402,7 +349,7 @@ export default {
   line-height: 30px;
   max-height: 60px;
   color: #000;
-  margin-bottom: 4px;
+  margin-bottom: 0;
   justify-content: space-between;
   letter-spacing: 0.25px;
   line-height: 30px;
