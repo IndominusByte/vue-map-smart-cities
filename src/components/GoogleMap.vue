@@ -35,6 +35,7 @@
                   <h4>Tempat wisata terpopuler</h4>
                   <draggable
                     class="card-col-attraction"
+                    :sort="false"
                     v-model="places"
                     v-bind="dragOptions"
                   >
@@ -213,8 +214,12 @@ export default {
         for (let i = 0; i < data.length; i++) {
           for (let j = 1; j < data.length; j++) {
             try {
-              let distance_one = (this.getDistance(data[i].position, data[j].position) / 1000).toFixed(2);
-              let distance_two = (this.getDistance(data[i].position, data[j + 1].position) / 1000).toFixed(2);
+              let distance_one = (
+                this.getDistance(data[i].position, data[j].position) / 1000
+              ).toFixed(2);
+              let distance_two = (
+                this.getDistance(data[i].position, data[j + 1].position) / 1000
+              ).toFixed(2);
               let tmpData = null;
               if (distance_one > distance_two) {
                 tmpData = data[j];
