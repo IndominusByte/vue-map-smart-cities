@@ -24,6 +24,27 @@
           @idle="updateData"
         >
         </gmap-map>
+
+        <div class="row mt-4">
+          <div class="col">
+            <gmap-autocomplete
+              class="form-control"
+              placeholder="Search destination"
+              :value="searchMap"
+              :options="autocompleteOptions"
+              @place_changed="setPlace"
+            >
+            </gmap-autocomplete>
+          </div>
+          <div class="col">
+            <button class="btn btn-danger mr-2" @click="resetMap">
+              Reset Trip
+            </button>
+            <button class="btn btn-dark" @click="optimizeRoute">
+              Optimize Trip
+            </button>
+          </div>
+        </div>
       </div>
       <!--/col-md-4-->
       <div class="col card-col">
@@ -32,7 +53,7 @@
             <div class="card-body">
               <div class="row">
                 <div class="col col-md-5 offset-md-2">
-                  <h4>Tempat wisata terpopuler</h4>
+                  <h4 class="mb-4">Tempat wisata terpopuler</h4>
                   <draggable
                     class="card-col-attraction"
                     :sort="false"
@@ -86,7 +107,7 @@
                   <!--/card-col-attraction-->
                 </div>
                 <div class="col col-5">
-                  <h4>Pilih tempat wisata</h4>
+                  <h4 class="mb-4">Pilih tempat wisata</h4>
                   <draggable
                     class="card-col-attraction"
                     v-model="places_selected"
@@ -144,8 +165,6 @@
       <!--/col card-col-->
     </div>
     <!--/row-->
-    <button class="mr-2" @click="resetMap">Reset Trip</button>
-    <button @click="optimizeRoute">Optimize Trip</button>
   </div>
 </template>
 
@@ -157,6 +176,12 @@ import draggable from "vuedraggable";
 export default {
   data() {
     return {
+      searchMap: null,
+      autocompleteOptions: {
+        componentRestrictions: {
+          country: ["id"]
+        }
+      },
       center: { lat: -8.381357822670871, lng: 115.13967209436002 },
       current_position: { lat: null, lng: null },
       places: [],
@@ -189,6 +214,9 @@ export default {
     }
   },
   methods: {
+    setPlace(e) {
+      this.mapObject.setCenter(e.geometry.location);
+    },
     rad(x) {
       return (x * Math.PI) / 180;
     },
