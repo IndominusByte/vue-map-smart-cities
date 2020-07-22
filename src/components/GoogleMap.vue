@@ -61,7 +61,8 @@
                     v-bind="dragOptions"
                   >
                     <transition-group
-                      enter-active-class="animate__animated animate__backInDown animate__faster"
+                      mode="out-in"
+                      enter-active-class="animate__animated animate__backInDown"
                       leave-active-class="animate__animated animate__backOutDown animate__faster"
                     >
                       <div
@@ -82,6 +83,7 @@
                     class="card-col-attraction"
                     v-model="places_selected"
                     v-bind="dragOptions"
+                    @change="changePlaceSelect"
                   >
                     <div
                       v-for="value in places_selected"
@@ -132,11 +134,6 @@ export default {
       places_selected: []
     };
   },
-  watch: {
-    places_selected() {
-      this.calculateAndDisplayRoute();
-    }
-  },
   computed: {
     google: gmapApi,
     mapObject() {
@@ -158,6 +155,9 @@ export default {
     }
   },
   methods: {
+    changePlaceSelect() {
+      this.calculateAndDisplayRoute();
+    },
     setPlace(e) {
       this.mapObject.setCenter(e.geometry.location);
     },
@@ -279,6 +279,9 @@ export default {
       }
     },
     updateData() {
+      //reset data when map idle
+      this.places = [];
+
       let current_cursor = new this.google.maps.LatLng(
         this.current_position.lat,
         this.current_position.lng
@@ -286,7 +289,6 @@ export default {
       // object map
       let map = new this.google.maps.places.PlacesService(this.mapObject);
       // search nearby tourist attraction from current cursor
-      this.places = [];
       map.nearbySearch(
         {
           location: current_cursor, //Add initial lat/lon here
