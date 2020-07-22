@@ -130,6 +130,7 @@ export default {
       },
       center: { lat: -8.381357822670871, lng: 115.13967209436002 },
       current_position: { lat: null, lng: null },
+      distanceTo: { atm: null, pharmacy: null, convenience_store: null },
       places: [],
       places_selected: []
     };
@@ -155,8 +156,72 @@ export default {
     }
   },
   methods: {
-    changePlaceSelect() {
+    callbackAtm(results, status) {
+      if (status == this.google.maps.places.PlacesServiceStatus.OK) {
+        this.distanceTo.atm = results[0].geometry.location;
+      }
+    },
+    callbackPharmacy(results, status) {
+      if (status == this.google.maps.places.PlacesServiceStatus.OK) {
+        this.distanceTo.pharmacy = results[0].geometry.location;
+      }
+    },
+    callbackConvenienceStore(results, status) {
+      if (status == this.google.maps.places.PlacesServiceStatus.OK) {
+        this.distanceTo.convenience_store = results[0].geometry.location;
+      }
+    },
+    changePlaceSelect(e) {
       this.calculateAndDisplayRoute();
+
+      if (e.added) {
+        let map = new this.google.maps.places.PlacesService(this.mapObject);
+        for (let key in this.places_selected) {
+          //location for search nearby
+          let location = this.places_selected[key].position;
+          // search nearby atm from location
+          map.nearbySearch(
+            {
+              location: location,
+              rankBy: this.google.maps.places.RankBy.DISTANCE,
+              type: ["atm"]
+            },
+            this.callbackAtm
+          );
+          // search nearby pharmacy from location
+          map.nearbySearch(
+            {
+              location: location,
+              rankBy: this.google.maps.places.RankBy.DISTANCE,
+              type: ["pharmacy"]
+            },
+            this.callbackPharmacy
+          );
+          // search nearby convenience_store from location
+          map.nearbySearch(
+            {
+              location: location,
+              rankBy: this.google.maps.places.RankBy.DISTANCE,
+              type: ["convenience_store"]
+            },
+            this.callbackConvenienceStore
+          );
+
+          // wait 1 second until distanceTo ready
+          setTimeout(() => {
+            this.places_selected[key].atm = (
+              this.getDistance(location, this.distanceTo.atm) / 1000
+            ).toFixed(2);
+            this.places_selected[key].pharmacy = (
+              this.getDistance(location, this.distanceTo.pharmacy) / 1000
+            ).toFixed(2);
+            this.places_selected[key].convenience_store = (
+              this.getDistance(location, this.distanceTo.convenience_store) /
+              1000
+            ).toFixed(2);
+          }, 1000);
+        }
+      }
     },
     setPlace(e) {
       this.mapObject.setCenter(e.geometry.location);
@@ -256,6 +321,9 @@ export default {
     },
     callbackTouristAttraction(results, status) {
       if (status == this.google.maps.places.PlacesServiceStatus.OK) {
+        //reset data when map idle and status ok
+        this.places = [];
+
         for (let key in results) {
           let value = results[key];
 
@@ -279,9 +347,6 @@ export default {
       }
     },
     updateData() {
-      //reset data when map idle
-      this.places = [];
-
       let current_cursor = new this.google.maps.LatLng(
         this.current_position.lat,
         this.current_position.lng
@@ -343,6 +408,12 @@ export default {
 .img-fit {
   object-fit: cover;
 }
+.fs-10 {
+  font-size: 10px;
+}
+.fs-11 {
+  font-size: 11px;
+}
 .fs-12 {
   font-size: 12px;
 }
@@ -378,7 +449,7 @@ export default {
   color: #757575;
   font-size: 12px;
   font-weight: 400;
-  line-height: 16px;
+  line-height: 18px;
   max-height: 48px;
   display: flex;
 }
@@ -387,5 +458,8 @@ export default {
 }
 .ghost {
   opacity: 0.5;
+}
+.text-grey {
+  color: #757575;
 }
 </style>
