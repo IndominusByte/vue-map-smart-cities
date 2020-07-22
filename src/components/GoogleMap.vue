@@ -213,12 +213,8 @@ export default {
         for (let i = 0; i < data.length; i++) {
           for (let j = 1; j < data.length; j++) {
             try {
-              let distance_one = (
-                this.getDistance(data[i].position, data[j].position) / 1000
-              ).toFixed(2);
-              let distance_two = (
-                this.getDistance(data[i].position, data[j + 1].position) / 1000
-              ).toFixed(2);
+              let distance_one = (this.getDistance(data[i].position, data[j].position) / 1000).toFixed(2);
+              let distance_two = (this.getDistance(data[i].position, data[j + 1].position) / 1000).toFixed(2);
               let tmpData = null;
               if (distance_one > distance_two) {
                 tmpData = data[j];
@@ -339,6 +335,29 @@ export default {
 </script>
 
 <style>
+.gm-ui-hover-effect {
+  display: none !important;
+}
+.gm-style-iw-d {
+  overflow: hidden !important;
+}
+.gm-style .gm-style-iw-c {
+  padding: 0px;
+  top: 40px;
+  border-radius: 12px;
+}
+.gm-style .gm-style-iw-t::after {
+  top: 38px;
+}
+.gmnoprint > div {
+  border-radius: 8px !important;
+}
+.gm-control-active.gm-fullscreen-control {
+  border-radius: 8px !important;
+}
+.gm-style-pbc {
+  opacity: 0 !important;
+}
 .img-fit {
   object-fit: cover;
 }
