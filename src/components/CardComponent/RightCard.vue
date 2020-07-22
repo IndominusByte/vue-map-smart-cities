@@ -1,5 +1,9 @@
 <template>
-  <div class="card">
+  <div
+    class="card"
+    @mouseenter="changeContent = true"
+    @mouseleave="changeContent = false"
+  >
     <img
       class="card-img-top img-fit"
       :src="value.icon"
@@ -7,19 +11,9 @@
       height="180"
     />
     <div class="card-body p-2">
-      <div class="row no-gutters align-items-center">
-        <div class="col col-md-10">
-          <h5 class="card-title text-truncate card-name">
-            {{ value.name }}
-          </h5>
-        </div>
-        <div class="col col-md-2">
-          <i
-            class="fal fa-info-circle text-secondary float-right"
-            @click="changeContent = !changeContent"
-          ></i>
-        </div>
-      </div>
+      <h5 class="card-title text-truncate card-name">
+        {{ value.name }}
+      </h5>
       <transition
         mode="out-in"
         enter-active-class="animate__animated animate__fadeInDown animate__faster"
@@ -40,21 +34,15 @@
           <div class="text-dark">
             <span class="font-weight-normal pl-0 mr-2 badge">
               <i class="fal fa-credit-card fa-lg mr-1"></i>
-              <span class="fs-11">
-                {{value.atm}} Km
-              </span>
+              <span class="fs-11"> {{ value.atm }} Km </span>
             </span>
             <span class="font-weight-normal pl-0 mr-2 badge fs-10">
               <i class="fal fa-capsules fa-lg mr-1"></i>
-              <span class="fs-11">
-                {{value.pharmacy}} Km
-              </span>
+              <span class="fs-11"> {{ value.pharmacy }} Km </span>
             </span>
             <span class="font-weight-normal pl-0 mr-2 badge fs-10">
               <i class="fal fa-store fa-lg mr-1"></i>
-              <span class="fs-11">
-                {{value.convenience_store}} Km
-              </span>
+              <span class="fs-11"> {{ value.convenience_store }} Km </span>
             </span>
           </div>
         </div>
