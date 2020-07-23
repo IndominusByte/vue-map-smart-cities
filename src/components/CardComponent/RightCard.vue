@@ -34,15 +34,19 @@
           <div class="text-dark">
             <span class="font-weight-normal pl-0 mr-2 badge">
               <i class="fal fa-credit-card fa-lg mr-1"></i>
-              <span class="fs-11"> {{ value.atm }} Km </span>
+              <span class="fs-11"> {{ value.atm ? atm : "Loading.." }}</span>
             </span>
             <span class="font-weight-normal pl-0 mr-2 badge fs-10">
               <i class="fal fa-capsules fa-lg mr-1"></i>
-              <span class="fs-11"> {{ value.pharmacy }} Km </span>
+              <span class="fs-11">
+                {{ value.pharmacy ? pharmacy : "Loading.." }}
+              </span>
             </span>
             <span class="font-weight-normal pl-0 mr-2 badge fs-10">
               <i class="fal fa-store fa-lg mr-1"></i>
-              <span class="fs-11"> {{ value.convenience_store }} Km </span>
+              <span class="fs-11">
+                {{ value.convenience_store ? convenience_store : "Loading.." }}
+              </span>
             </span>
           </div>
         </div>
@@ -65,6 +69,17 @@ export default {
     return {
       changeContent: false
     };
+  },
+  computed: {
+    atm() {
+      return this.value.atm + "Km";
+    },
+    pharmacy() {
+      return this.value.pharmacy + "Km";
+    },
+    convenience_store() {
+      return this.value.convenience_store + "Km";
+    }
   },
   components: {
     StarRating
